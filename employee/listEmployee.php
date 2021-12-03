@@ -3,7 +3,7 @@ include '../shared/navbar.php';
 include '../shared/config.php';
 include '../shared/fun.php';
 //read all employess
-$selsect = "SELECT * FROM `employess`";
+$selsect = "SELECT employess.id , employess.name emoName, salary , department.name depName FROM `employess` JOIN `department` ON employess.depId = department.id ";
 $s = mysqli_query($conect, $selsect);
 
 //delete
@@ -18,39 +18,37 @@ if (isset($_GET['delete'])) {
 
 if ($_SESSION['admin']) {
 } else {
-    header("location: /hrSystem/login.php");
+    header("location: /hrSystem/adminLogin.php");
 }
 ?>
 
 
-<div class="container col-sm-6 mt-5">
-        <table class="table table-dark">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Salary</th>
-                <th scope="col">Department ID</th>
-                <?php if ($_SESSION['admin'] == 'toma') { ?>
-                    <th colspan="2">Action</th>
-                <?php } ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($s as $data) { ?>
+<div class="container col-md-6 col-sm-12 mrg">
+    <div class="box">
+        <h1 class="apptext">List Employees</h1>
+        <table class="table" style="background-color: #bbb;">
+            <thead>
                 <tr>
-                    <th> <?php echo $data['id'] ?></th>
-                    <th> <?php echo $data['name'] ?></th>
-                    <th> <?php echo $data['salary'] ?></th>
-                    <th> <?php echo $data['depId'] ?></th>
-                    <?php if ($_SESSION['admin'] == 'toma') { ?>
-                        <th> <a href="/hrSystem/employee/listEmployee.php?delete=<?php echo $data['id'] ?>" class="btn btn-danger">Delete</a></th>
-                        <th> <a href="/hrSystem/employee/addEmployee.php?edit=<?php echo $data['id'] ?>" class="btn btn-info">Update</a></th>
-                    <?php } ?>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+
+                    <th scope="col">Details</th>
+
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($s as $data) { ?>
+                    <tr>
+                        <th> <?php echo $data['id'] ?></th>
+                        <th> <?php echo $data['emoName'] ?></th>
+
+                        <th> <a href="/hrSystem/employee/emp.php?details=<?php echo $data['id'] ?>">view details</a></th>
+
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 <?php
 include '../shared/script.php' ?>
